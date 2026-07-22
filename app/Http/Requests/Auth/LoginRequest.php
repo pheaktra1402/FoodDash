@@ -31,8 +31,15 @@ class LoginRequest extends FormRequest
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ];
-    }
 
+    }
+    public function store(): array{
+        return[
+            'email.required' => 'Please enter your email',
+            'email.email' => 'Invalid email',
+            'password.required' => 'Please enter your password'
+        ];
+    }
     /**
      * Attempt to authenticate the request's credentials.
      *
