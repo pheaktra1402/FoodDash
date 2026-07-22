@@ -19,6 +19,5 @@
         <div class="w-full">
             {{ $slot }}
         </div>
-
     </body>
 </html>
