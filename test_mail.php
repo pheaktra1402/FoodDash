@@ -1,14 +1,11 @@
-<?php
-require __DIR__.'/vendor/autoload.php';
-$app = require_once __DIR__.'/bootstrap/app.php';
-$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
-$kernel->bootstrap();
+
+use Illuminate\Support\Facades\Mail;
 
 try {
-    \Illuminate\Support\Facades\Mail::raw('Test email from local Laravel app', function($msg) { 
-        $msg->to('hyleabheng21@gmail.com')->subject('Test Email'); 
+    Mail::raw('Test email', function ($msg) { 
+        $msg->to('pheaktrathorn474@gmail.com')->subject('Test'); 
     });
-    echo "Email sent successfully!\n";
+    echo 'Email sent successfully!';
 } catch (\Exception $e) {
-    echo "Error sending email: " . $e->getMessage() . "\n";
+    echo 'Error sending email: ' . $e->getMessage();
 }
