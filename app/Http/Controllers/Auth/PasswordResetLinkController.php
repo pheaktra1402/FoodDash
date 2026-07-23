@@ -27,8 +27,13 @@ class PasswordResetLinkController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required','email','exists:users,email'],
+        ],[
+            'email.required' => 'Please enter your email address.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.exists' => 'We could not find an account registered with that email address.',
         ]);
+        
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we
@@ -42,4 +47,5 @@ class PasswordResetLinkController extends Controller
                     : back()->withInput($request->only('email'))
                         ->withErrors(['email' => __($status)]);
     }
+    
 }

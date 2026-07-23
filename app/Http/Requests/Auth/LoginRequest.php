@@ -37,7 +37,8 @@ class LoginRequest extends FormRequest
         return[
             'email.required' => 'Please enter your email',
             'email.email' => 'Invalid email',
-            'password.required' => 'Please enter your password'
+            'password.required' => 'Please enter your password',
+            'password.password' => 'Password is incorrect'
         ];
     }
     /**
@@ -53,7 +54,8 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'email' => 'Email not found',
+                'password' => 'Password is in correct'
             ]);
         }
 

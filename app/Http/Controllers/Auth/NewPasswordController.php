@@ -33,8 +33,15 @@ class NewPasswordController extends Controller
     {
         $request->validate([
             'token' => ['required'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'exists:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ],[
+            'email.required' => 'Please enter your email.',
+            'email.email' => 'Invalid email format.',
+            'email.exists' => 'This email is not registered in our records.',
+            'password.required' => 'Please enter your new password.',
+            'password.confirmed' => 'Password does not match.',
+
         ]);
 
         // Here we will attempt to reset the user's password. If it is successful we
