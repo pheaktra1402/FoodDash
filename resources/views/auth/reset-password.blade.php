@@ -24,7 +24,6 @@
                 </p>
             </div>
 
-            <!-- 📍 Added novalidate -->
             <form method="POST" action="{{ route('password.store') }}" class="space-y-4" novalidate>
                 @csrf
 
@@ -67,7 +66,7 @@
                            required 
                            autocomplete="new-password"
                            placeholder="Confirm New Password" 
-                           class="w-full rounded-full border border-slate-300 bg-white px-5 py-3 text-sm text-slate-800 placeholder-slate-400 focus:border-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none transition duration-200" />
+                           class="w-full rounded-full border @error('password_confirmation') border-rose-500 focus:border-rose-500 focus:ring-rose-500 @else border-slate-300 focus:border-slate-900 focus:ring-slate-900 @enderror bg-white px-5 py-3 text-sm text-slate-800 placeholder-slate-400 focus:ring-1 focus:outline-none transition duration-200" />
                     
                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1.5 text-xs text-rose-600 px-4" />
                 </div>

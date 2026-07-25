@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PageController;
-
+use App\Http\Controllers\CategoryController;
 
 
 Route::get('/dashboard', function () {
@@ -43,5 +43,11 @@ Route::get('/about', function () {
 
 // });
 
+
+
+
+Route::middleware(['auth', 'CheckAdmin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
+});
 
 require __DIR__ . '/auth.php';

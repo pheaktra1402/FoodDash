@@ -1,6 +1,10 @@
 <x-guest-layout>
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+ @if (session('status'))
+        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)" class="w-full max-w-md mx-auto px-4 text-center">
+            <x-auth-session-status class="!text-emerald-600 !font-semibold !bg-transparent !border-0 !shadow-none !p-0" :status="session('status')" />
+        </div>
+    @endif
 
     <div class="w-full max-w-md mx-auto px-4 py-8">
         

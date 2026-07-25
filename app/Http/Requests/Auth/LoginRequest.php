@@ -48,17 +48,29 @@ class LoginRequest extends FormRequest
      */
     public function authenticate(): void
     {
+        // 1. Checks if the user tried to log in too many times. 
+    // Stops them if they are temporarily locked out.
         $this->ensureIsNotRateLimited();
+        //Check if the user exists
+        $user = \App\Models\User::where('email', $this->input('email'))->first();
+        if(!$user){
+        RateLimiter::hit($this->throttleKey());
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        throw ValidationException::withMessages([
+            'email' => 'Email not found',
+        ]);
+        }
+  
+        //User exists, now check if the password matches
+        if(!\Illuminate\Support\Facades\Hash::check($this->input('password'), $user->password)){
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => 'Email not found',
-                'password' => 'Password is in correct'
+                'password' => 'Password is'
             ]);
         }
-
+        Auth::login($user , $this->boolean('remember'));
+        //If successful, clear the failed attempt counter.
         RateLimiter::clear($this->throttleKey());
     }
 
