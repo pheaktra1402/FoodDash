@@ -23,9 +23,11 @@
         @auth
             <!-- បើគាត់ជា Admin ឱ្យបង្ហាញប៊ូតុងមួយនេះបន្ថែម -->
             @if(auth()->user()->role === 'admin')
-                <a href="/admin/dashboard" class="bg-rose-600 text-white px-3 py-1 rounded.full text-xs font-bold">
-                    ⚙️ Admin Panel
+                <a href="{{ route('admin.products.index') }}"
+                    class="bg-rose-100 text-rose-600 hover:bg-rose-200 px-3 py-1.5 rounded-full text-xs font-semibold transition">
+                    Admin Panel
                 </a>
+
             @endif
 
             <!-- បង្ហាញឈ្មោះ User ដែលកំពុងប្រើប្រាស់ -->

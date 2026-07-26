@@ -66,7 +66,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'password' => 'Password is'
+                'password' => 'Password is incorrect'
             ]);
         }
         Auth::login($user , $this->boolean('remember'));

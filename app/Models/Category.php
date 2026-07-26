@@ -2,9 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'iconUrl'];
+    use HasFactory;
+
+    protected $fillable = [
+        'category_code',
+        'category_name',
+        'description',
+    ];
 }

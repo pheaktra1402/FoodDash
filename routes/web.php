@@ -1,15 +1,35 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AdminProductController;
 
+/*
+|--------------------------------------------------------------------------
+| Public Routes (Accessible by everyone)
+|--------------------------------------------------------------------------
+*/
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+// User Product Views
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+/*
+|--------------------------------------------------------------------------
+| Authenticated User Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/dashboard', function () {
-    return redirect()-> route('home');
+    return redirect()->route('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -17,37 +37,34 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-// -------------------------------------------------------------
-// 🌐 PUBLIC ROUTES (Visitor ចូលមើលបានទាំងអស់ ដោយមិនបាច់ Login)
-// -------------------------------------------------------------
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
 
-Route::get('/products', function () {
-    return view('products.index');
-})->name('products.index');
+/*
+|--------------------------------------------------------------------------
+| Admin Panel Routes (Protected by auth & admin middleware)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    
+    // Admin Dashboard (/admin and /admin/dashboard)
+    Route::get('/', function () {
+        return redirect()->route('admin.dashboard');
+    });
+    
+    Route::get('/dashboard', [AdminProductController::class, 'dashboard'])->name('dashboard');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-// -------------------------------------------------------------
-// 🔒 PROTECTED ROUTES (ទាមទារឱ្យ Login ជាមុនសិន)
-// -------------------------------------------------------------
-// Route::middleware(['auth'])->group(function () {
+    // Products Management (/admin/products)
+    Route::resource('products', AdminProductController::class);
 
-//     // បើ Visitor ព្យាយាមចុច Link ទាំងអស់នេះ វានឹងរត់ទៅ Login Page ដោយស្វ័យប្រវត្តិ
-//     Route::post('/cart/add/{id}', [CheckoutController::class, 'addToCart'])->name('cart.add');
-//     Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-//     Route::get('/my-orders', [CheckoutController::class, 'myOrders'])->name('orders');
-
-// });
-
-
-
-
-Route::middleware(['auth', 'CheckAdmin'])->prefix('admin')->name('admin.')->group(function () {
+    // Categories Management (/admin/categories)
     Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
+
+    // Orders Management (/admin/orders)
+    Route::get('/orders', function() {
+        return view('admin.orders.index');
+    })->name('orders.index');
+
+    // Category Routes
+    Route::resource('categories', CategoryController::class);
 });
 
 require __DIR__ . '/auth.php';
