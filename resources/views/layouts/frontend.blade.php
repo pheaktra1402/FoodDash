@@ -43,11 +43,17 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('products*') ? 'active fw-bold text-success' : 'text-secondary' }}" href="{{ url('/products') }}">Products</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('about*') ? 'active fw-bold text-success' : 'text-secondary' }}" href="{{ url('/about') }}">About us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('contact*') ? 'active fw-bold text-success' : 'text-secondary' }}" href="{{ url('/contact') }}">Contact us</a>
+                    </li>
                 </ul>
 
                 <div class="d-flex align-items-center gap-3">
                     @if(auth()->check() && (auth()->user()->is_admin || auth()->user()->role === 'admin'))
-                        <a href="{{ route('admin.products.index') }}" class="btn btn-danger btn-sm rounded-pill px-3 fw-semibold opacity-75">
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-danger btn-sm rounded-pill px-3 fw-semibold opacity-75">
                             Admin Panel
                         </a>
                     @endif

@@ -38,4 +38,30 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.index')
                          ->with('success', 'Category created successfully!');
     }
+    // Show the form to edit the category
+public function edit($id)
+{
+    $category = Category::findOrFail($id);
+    return view('admin.categories.edit', compact('category'));
+}
+
+// Update the category in the database
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'name'        => 'required|string|max:255',
+        'description' => 'nullable|string',
+    ]);
+
+    $category = Category::findOrFail($id);
+    
+    // Fallback support for name / category_name attribute
+    $category->update([
+        'name'        => $request->name,
+        'description' => $request->description,
+    ]);
+
+    return redirect()->route('admin.categories.index')
+                     ->with('success', 'Category updated successfully!');
+}
 }

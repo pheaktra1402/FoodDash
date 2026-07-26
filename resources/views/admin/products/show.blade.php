@@ -1,5 +1,6 @@
 @extends('layouts.backend')
-@section('content')
+
+@section('admin-content')
 <main>
 	<div class="container-fluid">
 		<h1>Show product</h1>

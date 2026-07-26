@@ -61,4 +61,49 @@ class AdminProductController extends Controller
         $product->delete();
         return back()->with('status', 'Product deleted!');
     }
+     // Show the edit form
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+
+        return view('admin.products.edit', compact('product', 'categories'));
+    }
+
+    // Update product record
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        // Update image if a new file was uploaded
+        if ($request->hasFile('image')) {
+            // Delete old image from storage if it exists
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            // Store new image
+            $imagePath = $request->file('image')->store('products', 'public');
+            $product->image = $imagePath;
+        }
+
+        // Update database fields
+        $product->name = $request->name;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
+        $product->description = $request->description;
+        $product->save();
+
+        return redirect()->route('admin.products.index')
+            ->with('success', 'Product updated successfully!');
+    }
+
 }

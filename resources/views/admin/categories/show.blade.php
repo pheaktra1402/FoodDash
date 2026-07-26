@@ -1,6 +1,6 @@
 @extends('layouts.backend')
 
-@section('content')
+@section('admin-content')
     <h1>Category details</h1>
     <p>name: {{$category->name}}</p>
     <p>description: {{$category->description}}</p>

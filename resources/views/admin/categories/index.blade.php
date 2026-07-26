@@ -1,6 +1,6 @@
-@extends('layouts.frontend')
+@extends('layouts.backend')
 
-@section('content')
+@section('admin-content')
 <div class="container my-4">
     <div class="card shadow-sm border-0">
         <div class="card-body p-4">

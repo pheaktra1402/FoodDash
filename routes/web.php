@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\Admin\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
@@ -16,8 +16,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/about', function () {
-    return view('about');
+    return view('profile.about');
 })->name('about');
+Route::get('/contact', function () {
+    return view('profile.contact');
+})->name('contact');
 
 // User Product Views
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -44,27 +47,34 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    
+
     // Admin Dashboard (/admin and /admin/dashboard)
     Route::get('/', function () {
         return redirect()->route('admin.dashboard');
     });
-    
+
     Route::get('/dashboard', [AdminProductController::class, 'dashboard'])->name('dashboard');
 
     // Products Management (/admin/products)
     Route::resource('products', AdminProductController::class);
 
-    // Categories Management (/admin/categories)
-    Route::resource('categories', CategoryController::class)->except(['create', 'show', 'edit']);
 
     // Orders Management (/admin/orders)
-    Route::get('/orders', function() {
+    Route::get('/orders', function () {
         return view('admin.orders.index');
     })->name('orders.index');
 
     // Category Routes
     Route::resource('categories', CategoryController::class);
+
+    //order
+
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('admin/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+        Route::get('admin/orders/{id}', [OrderController::class, 'show'])->name('admin.orders.show');
+        Route::patch('admin/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.update-status');
+    });
 });
 
 require __DIR__ . '/auth.php';
