@@ -49,7 +49,7 @@
                         @endif
 
                         <div class="flex items-center gap-3 border-l border-slate-200 pl-4 ml-2">
-                            <span class="text-sm font-semibold text-slate-800">Hi, {{ auth()->user()->name }}</span>
+                            <span class="text-sm font-semibold text-slate-800">Hello, {{ auth()->user()->name }}</span>
                             
                             <!-- Logout Button -->
                             <form method="POST" action="{{ route('logout') }}" class="inline">

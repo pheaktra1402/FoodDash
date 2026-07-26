@@ -1,4 +1,4 @@
-@extends('layout.backend')
+@extends('layouts.backend')
 @section('content')
 		<h2 class="mb-4">Edit Product</h2>
 		<ol class="breadcrumb mb-4">
