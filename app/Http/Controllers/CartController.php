@@ -3,7 +3,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
     // Display the cart page
@@ -66,4 +68,45 @@ class CartController extends Controller
             session()->flash('success', 'Product removed successfully!');
         }
     }
+    // Process the checkout and save order to database
+public function checkout()
+{
+    $cart = session()->get('cart');
+
+    if(!$cart || count($cart) == 0) {
+        return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
+    }
+
+    // Calculate total
+    $totalPrice = 0;
+    foreach($cart as $details) {
+        $totalPrice += $details['price'] * $details['quantity'];
+    }
+
+    // Create the Order record
+    $order = Order::create([
+        'user_id'       => Auth::id(), // null if guest, or authenticated user ID
+        'customer_name' => Auth::user()->name ?? 'Guest Buyer',
+        'total_price'   => $totalPrice,
+        'status'        => 'pending'
+    ]);
+
+    // Save individual order items
+    foreach($cart as $id => $details) {
+        // Check if you have an OrderItem model/table, or save directly if structured differently
+        \DB::table('order_items')->insert([
+            'order_id'   => $order->id,
+            'product_id' => $id,
+            'price'      => $details['price'],
+            'quantity'   => $details['quantity'],
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
+    // Clear the cart session
+    session()->forget('cart');
+
+    return redirect()->route('products.index')->with('success', 'Order placed successfully! Thank you for buying.');
+}
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         body {
             background-color: #f8f9fa;
@@ -17,11 +18,13 @@
             display: flex;
             flex-direction: column;
         }
+
         main {
             flex: 1;
         }
     </style>
 </head>
+
 <body>
 
     <!-- NAVBAR (Clean White Style) -->
@@ -38,22 +41,27 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('/') ? 'active fw-bold text-success' : 'text-secondary' }}" href="{{ url('/') }}">Home</a>
+                        <a class="nav-link {{ request()->is('/') ? 'active fw-bold text-success' : 'text-secondary' }}"
+                            href="{{ url('/') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('products*') ? 'active fw-bold text-success' : 'text-secondary' }}" href="{{ url('/products') }}">Products</a>
+                        <a class="nav-link {{ request()->is('products*') ? 'active fw-bold text-success' : 'text-secondary' }}"
+                            href="{{ url('/products') }}">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('about*') ? 'active fw-bold text-success' : 'text-secondary' }}" href="{{ url('/about') }}">About us</a>
+                        <a class="nav-link {{ request()->is('about*') ? 'active fw-bold text-success' : 'text-secondary' }}"
+                            href="{{ url('/about') }}">About us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('contact*') ? 'active fw-bold text-success' : 'text-secondary' }}" href="{{ url('/contact') }}">Contact us</a>
+                        <a class="nav-link {{ request()->is('contact*') ? 'active fw-bold text-success' : 'text-secondary' }}"
+                            href="{{ url('/contact') }}">Contact us</a>
                     </li>
                 </ul>
 
                 <div class="d-flex align-items-center gap-3">
                     @if(auth()->check() && (auth()->user()->is_admin || auth()->user()->role === 'admin'))
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-danger btn-sm rounded-pill px-3 fw-semibold opacity-75">
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="btn btn-danger btn-sm rounded-pill px-3 fw-semibold opacity-75">
                             Admin Panel
                         </a>
                     @endif
@@ -73,6 +81,23 @@
                         <a href="{{ route('login') }}" class="btn btn-outline-success btn-sm px-3 rounded-pill">Login</a>
                         <a href="{{ route('register') }}" class="btn btn-success btn-sm px-3 rounded-pill">Register</a>
                     @endauth
+                    @php
+                        // Calculate total quantity of items in session cart
+                        $cartCount = 0;
+                        if (session('cart')) {
+                            foreach (session('cart') as $details) {
+                                $cartCount += $details['quantity'];
+                            }
+                        }
+                    @endphp
+
+                    <a href="{{ route('cart.index') }}" class="btn btn-outline-dark position-relative me-2">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $cartCount }}
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -93,4 +118,5 @@
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -50,6 +50,13 @@
                                         View Details
                                     </a>
                                 </div>
+                                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill px-2">
+                                        <i class="fa-solid fa-cart-plus"></i>
+                                    </button>
+                                </form>
                             </div>
 
                         </div>
