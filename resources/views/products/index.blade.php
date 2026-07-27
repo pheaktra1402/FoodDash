@@ -1,6 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
+    
     <div class="container my-5">
 
         <!-- Section Header -->
@@ -10,7 +11,16 @@
                 <p class="text-muted m-0">Explore our latest collection of items</p>
             </div>
         </div>
-
+        <!-- Search Form on the Right -->
+    <div class="row mb-4 justify-content-end ad">
+        <div class="col-md-4 col-sm-6">
+            <form action="{{ route('products.index') }}" method="GET" class="input-group">
+                <input type="text" name="search" class="form-control" placeholder="Search products or categories..."
+                    value="{{ request('search') }}">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
         <!-- Products Grid -->
         @if (count($products) > 0)
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">

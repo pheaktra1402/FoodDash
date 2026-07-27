@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodDash Shop</title>
-
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -93,7 +94,9 @@
 
                     <a href="{{ route('cart.index') }}" class="btn btn-outline-dark position-relative me-2">
                         <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <!-- បន្ថែម cart-badge-count ចូលទីនេះ -->
+                        <span
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge-count">
                             {{ $cartCount }}
                             <span class="visually-hidden">unread messages</span>
                         </span>

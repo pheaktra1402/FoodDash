@@ -6,10 +6,21 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch products from database
-        $products = Product::where('status', 1)->latest()->paginate();
+        $search = $request->input('search');
+
+        // Fetch products from database with search support for product_name and category
+        $products = Product::with('category')
+            ->where('status', 1)
+            ->when($search, function ($query, $search) {
+                return $query->where('product_name', 'like', "%{$search}%")
+                             ->orWhereHas('category', function ($q) use ($search) {
+                                 $q->where('category_name', 'like', "%{$search}%");
+                             });
+            })
+            ->latest()
+            ->paginate(8);
 
         return view('products.index', compact('products'));
     }
@@ -39,6 +50,7 @@ class ProductController extends Controller
 
 
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
+        
     }
     public function show($id)
     {

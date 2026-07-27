@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,11 +8,19 @@ class Order extends Model
 {
     use HasFactory;
 
-    // Add 'user_id' (and any other columns you are saving) to the fillable array
     protected $fillable = [
         'user_id',
         'total_price',
         'shipping_address',
+        'latitude',
+        'longitude',
+        'payment_method',
+        'payment_receipt',
         'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -16,28 +16,28 @@ class CartController extends Controller
     }
 
     // Add product to cart
-    public function add(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        $cart = session()->get('cart', []);
+    // public function add(Request $request, $id)
+    // {
+    //     $product = Product::findOrFail($id);
+    //     $cart = session()->get('cart', []);
 
-        // If product already exists in cart, increment quantity
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity'] += $request->input('quantity', 1);
-        } else {
-            // Otherwise, add new product item to cart array
-            $cart[$id] = [
-                "name" => $product->name ?? $product->title ?? 'Product',
-                "price" => $product->price ?? $product->selling_price ?? 0,
-                "quantity" => $request->input('quantity', 1),
-                "image" => $product->image ?? null
-            ];
-        }
+    //     // If product already exists in cart, increment quantity
+    //     if (isset($cart[$id])) {
+    //         $cart[$id]['quantity'] += $request->input('quantity', 1);
+    //     } else {
+    //         // Otherwise, add new product item to cart array
+    //         $cart[$id] = [
+    //             "name" => $product->name ?? $product->title ?? 'Product',
+    //             "price" => $product->price ?? $product->selling_price ?? 0,
+    //             "quantity" => $request->input('quantity', 1),
+    //             "image" => $product->image ?? null
+    //         ];
+    //     }
 
-        session()->put('cart', $cart);
+    //     session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
-    }
+    //     return redirect()->back()->with('success', 'Product added to cart successfully!');
+    // }
 
     // Update cart item quantities
     public function update(Request $request)
@@ -68,6 +68,41 @@ class CartController extends Controller
             session()->flash('success', 'Product removed successfully!');
         }
     }
+public function store(Request $request, $id)
+{
+    $product = Product::findOrFail($id);
+
+    $cart = session()->get('cart', []);
+    
+    if(isset($cart[$id])) {
+        $cart[$id]['quantity']++;
+    } else {
+        $cart[$id] = [
+            "name" => $product->product_name,
+            "quantity" => 1,
+            "price" => $product->selling_price,
+            "image" => $product->image
+        ];
+    }
+    
+    session()->put('cart', $cart);
+
+    // គណនាបរិមាណសរុប (Total Quantity) ឱ្យត្រូវគ្នាជាមួយ Layout
+    $totalQuantity = 0;
+    foreach ($cart as $details) {
+        $totalQuantity += $details['quantity'];
+    }
+
+    // បញ្ជូនទិន្នន័យត្រឡប់ទៅវិញជា JSON
+    if ($request->ajax() || $request->wantsJson()) {
+        return response()->json([
+            'success' => 'Product added to cart successfully!',
+            'cartCount' => $totalQuantity
+        ]);
+    }
+
+    return redirect()->back();
+}
     // Process the checkout and save order to database
 public function checkout()
 {
@@ -90,7 +125,7 @@ public function checkout()
         'total_price'   => $totalPrice,
         'status'        => 'pending'
     ]);
-
+    
     // Save individual order items
     foreach($cart as $id => $details) {
         // Check if you have an OrderItem model/table, or save directly if structured differently

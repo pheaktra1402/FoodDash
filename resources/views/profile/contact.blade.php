@@ -58,32 +58,32 @@
                         </div>
                     @endif
 
-                    <form action="#" method="POST">
-                        @csrf
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="name" class="form-label small fw-semibold text-secondary">Your Name</label>
-                                <input type="text" name="name" id="name" class="form-control rounded-3" placeholder="John Doe" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="email" class="form-label small fw-semibold text-secondary">Email Address</label>
-                                <input type="email" name="email" id="email" class="form-control rounded-3" placeholder="name@example.com" required>
-                            </div>
-                            <div class="col-12">
-                                <label for="subject" class="form-label small fw-semibold text-secondary">Subject</label>
-                                <input type="text" name="subject" id="subject" class="form-control rounded-3" placeholder="Order Inquiry, Feedback, etc." required>
-                            </div>
-                            <div class="col-12">
-                                <label for="message" class="form-label small fw-semibold text-secondary">Message</label>
-                                <textarea name="message" id="message" rows="5" class="form-control rounded-3" placeholder="Write your message here..." required></textarea>
-                            </div>
-                            <div class="col-12 mt-4">
-                                <button type="submit" class="btn btn-success fw-bold px-4 py-2.5 rounded-3 w-100 shadow-sm">
-                                    <i class="fa-solid fa-paper-plane me-2"></i> Send Message
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                  <form action="{{ route('contact.store') }}" method="POST">
+    @csrf
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label for="name" class="form-label small fw-semibold text-secondary">Your Name</label>
+            <input type="text" name="name" id="name" class="form-control rounded-3" placeholder="John Doe" required>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label small fw-semibold text-secondary">Email Address</label>
+            <input type="email" name="email" id="email" class="form-control rounded-3" placeholder="name@example.com" required>
+        </div>
+        <div class="col-12">
+            <label for="subject" class="form-label small fw-semibold text-secondary">Subject</label>
+            <input type="text" name="subject" id="subject" class="form-control rounded-3" placeholder="Order Inquiry, Feedback, etc." required>
+        </div>
+        <div class="col-12">
+            <label for="message" class="form-label small fw-semibold text-secondary">Message</label>
+            <textarea name="message" id="message" rows="5" class="form-control rounded-3" placeholder="Write your message here..." required></textarea>
+        </div>
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-success fw-bold px-4 py-2.5 rounded-3 w-100 shadow-sm">
+                <i class="fa-solid fa-paper-plane me-2"></i> Send Message
+            </button>
+        </div>
+    </div>
+</form>
                 </div>
             </div>
 
