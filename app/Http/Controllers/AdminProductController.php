@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 class AdminProductController extends Controller
 {
     // Admin Product Dashboard
@@ -76,8 +77,8 @@ class AdminProductController extends Controller
         $product = Product::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
+            'product_name' => 'required|string|max:255',
+            'selling_price' => 'required|numeric|min:0',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
@@ -96,8 +97,8 @@ class AdminProductController extends Controller
         }
 
         // Update database fields
-        $product->name = $request->name;
-        $product->price = $request->price;
+        $product->product_name = $request->product_name;
+        $product->selling_price = $request->selling_price;
         $product->category_id = $request->category_id;
         $product->description = $request->description;
         $product->save();

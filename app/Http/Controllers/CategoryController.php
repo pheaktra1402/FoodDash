@@ -26,7 +26,7 @@ class CategoryController extends Controller
         $request->validate([
             'category_code' => 'required|string|max:255|unique:categories,category_code',
             'category_name' => 'required|string|max:255|unique:categories,category_name',
-            'description' =>'required|string|max:255',
+            'description' => 'required|string|max:255',
         ]);
 
         Category::create([
@@ -36,32 +36,47 @@ class CategoryController extends Controller
         ]);
 
         return redirect()->route('admin.categories.index')
-                         ->with('success', 'Category created successfully!');
+            ->with('success', 'Category created successfully!');
     }
     // Show the form to edit the category
-public function edit($id)
-{
-    $category = Category::findOrFail($id);
-    return view('admin.categories.edit', compact('category'));
-}
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('admin.categories.edit', compact('category'));
+    }
 
-// Update the category in the database
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'name'        => 'required|string|max:255',
-        'description' => 'nullable|string',
-    ]);
+    // Update the category in the database
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-    $category = Category::findOrFail($id);
-    
-    // Fallback support for name / category_name attribute
-    $category->update([
-        'name'        => $request->name,
-        'description' => $request->description,
-    ]);
+        $category = Category::findOrFail($id);
 
-    return redirect()->route('admin.categories.index')
-                     ->with('success', 'Category updated successfully!');
-}
+        // Fallback support for name / category_name attribute
+        $category->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category updated successfully!');
+    }
+    public function destroy($id)
+    {
+        $category = Category::findOrFail($id);
+
+        // Optional: Prevent deleting if category has products attached
+        if ($category->products()->count() > 0) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', 'Cannot delete category with associated products!');
+        }
+
+        $category->delete();
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category deleted successfully!');
+    }
 }

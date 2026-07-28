@@ -18,29 +18,29 @@
             <div class="row g-3">
                 <!-- Product Name -->
                 <div class="col-md-8">
-                    <label for="name" class="form-label fw-semibold">Product Name <span class="text-danger">*</span></label>
+                    <label for="product_name" class="form-label fw-semibold">Product Name <span class="text-danger">*</span></label>
                     <input type="text" 
-                           name="name" 
-                           id="name" 
-                           class="form-control @error('name') is-invalid @enderror" 
-                           value="{{ old('name', $product->name ?? $product->product_name) }}" 
+                           name="product_name" 
+                           id="product_name" 
+                           class="form-control @error('product_name') is-invalid @enderror" 
+                           value="{{ old('product_name', $product->product_name) }}" 
                            required>
-                    @error('name')
+                    @error('product_name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <!-- Price -->
                 <div class="col-md-4">
-                    <label for="price" class="form-label fw-semibold">Price ($) <span class="text-danger">*</span></label>
+                    <label for="selling_price" class="form-label fw-semibold">Price ($) <span class="text-danger">*</span></label>
                     <input type="number" 
                            step="0.01" 
-                           name="price" 
-                           id="price" 
-                           class="form-control @error('price') is-invalid @enderror" 
-                           value="{{ old('price', $product->price ?? $product->selling_price) }}" 
+                           name="selling_price" 
+                           id="selling_price" 
+                           class="form-control @error('selling_price') is-invalid @enderror" 
+                           value="{{ old('selling_price', $product->selling_price) }}" 
                            required>
-                    @error('price')
+                    @error('selling_price')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
@@ -53,7 +53,7 @@
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}" 
                                 {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
-                                {{ $category->name ?? $category->category_name }}
+                                {{ $category->category_name ?? $category->name }}
                             </option>
                         @endforeach
                     </select>
