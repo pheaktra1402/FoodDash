@@ -40,7 +40,7 @@ class ProductController extends Controller
         }
 
         Product::create([
-            'product_code' => 'PRD-' . rand(1000, 9999), // 👈 Generates product_code automatically!
+            'product_code' => 'PRD-' . rand(1000, 9999),
             'product_name' => $request->product_name,
             'category_id' => $request->category_id,
             'description' => $request->description,
