@@ -538,7 +538,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // អាប់ដេតចំនួនលេខនៅលើកន្ត្រក (Cart Badge) ភ្លាមៗដោយមិនបាច់ Reload
                     const cartBadge = document.querySelector('.cart-badge-count');
                     if (cartBadge) {
                         cartBadge.innerText = data.cartCount;

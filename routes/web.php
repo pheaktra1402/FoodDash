@@ -1,23 +1,19 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Models\Product;
+// Controllers
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TelegramWebhookController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Models\Product;
-
-// Cart and Checkout Routes
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{id}', [CartController::class, 'store'])->name('cart.add');
-Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('checkout.process');
 
 /*
 |--------------------------------------------------------------------------
@@ -25,44 +21,73 @@ Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('checko
 |--------------------------------------------------------------------------
 */
 
-// ទំព័រដើម (Home) ភ្ជាប់មកជាមួយទិន្នន័យផលិតផល ($featuredProducts)
+// Home Page
 Route::get('/', function () {
-    $featuredProducts = Product::take(4)->get();    
-    return view('welcome', compact('featuredProducts')); 
+    $featuredProducts = Product::take(4)->get();
+    return view('welcome', compact('featuredProducts'));
 })->name('home');
 
+// About & Contact
 Route::get('/about', function () {
     return view('profile.about');
 })->name('about');
 
-// Contact Routes
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// User Product Views
+// Public Product Views
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
+// Cart Routes
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'store'])->name('cart.add');
+Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('checkout.process');
+
+
 /*
 |--------------------------------------------------------------------------
-| Authenticated User Routes (Checkout & Profile)
+| Authenticated User Routes (Checkout, Profile & Orders)
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
+
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Dashboard Redirect
+    Route::get('/dashboard', function () {
+        return redirect()->route('home');
+    })->middleware('verified')->name('dashboard');
+
     // Checkout Routes
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout/buy', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
+    // Payment & QR Code Routes
+    Route::get('/checkout/pay-qr/{order}', [PaymentController::class, 'showQrPage'])->name('payment.qr');
+    Route::get('/checkout/check-status/{order}', [PaymentController::class, 'checkStatus'])->name('payment.check-status');
+    Route::post('/payment/submit-proof/{order}', [OrderController::class, 'submitPaymentProof'])->name('payment.submit_proof');
+
+    // User Orders & Status
+    Route::get('/orders/success/{id}', [OrderController::class, 'orderSuccess'])->name('orders.success');
+    Route::get('/orders/{id}/check-payment-status', [OrderController::class, 'checkPaymentStatus']);
+    Route::get('/orders/{id}/pay', [OrderController::class, 'showPaymentQr']);
 });
 
-Route::get('/dashboard', function () {
-    return redirect()->route('home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+/*
+|--------------------------------------------------------------------------
+| Telegram Webhook Route (Exempt from CSRF)
+|--------------------------------------------------------------------------
+*/
+Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handleWebhook']);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +100,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         return redirect()->route('admin.dashboard');
     });
 
-    // Dashboard
+    // Admin Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Products Management
@@ -88,6 +113,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::post('/orders/{id}/confirm-payment', [OrderController::class, 'confirmPayment'])->name('admin.orders.confirm-payment');
+});
+
+Route::prefix('admin')->name('admin.')->group(function () {
+  
+    Route::post('/orders/{id}/confirm-payment', [OrderController::class, 'confirmPayment'])->name('orders.confirm-payment');
 });
 
 require __DIR__ . '/auth.php';

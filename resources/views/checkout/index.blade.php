@@ -1,13 +1,16 @@
 @extends('layouts.frontend')
 
 @section('content')
+    <!-- Leaflet CSS for proper map rendering -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
     <div class="container my-5">
         <h2 class="mb-4">Checkout Page</h2>
         <p class="text-muted">Welcome, <strong>{{ $user->name }}</strong>!</p>
 
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
+            <div class="alert alert-danger mb-4">
+                <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -22,7 +25,8 @@
             <div class="mb-3">
                 <label class="form-label fw-bold">Pin your Delivery Location on the Map:</label>
                 <div id="map" style="height: 400px; width: 100% !important; border-radius: 8px;" class="mb-2 border"></div>
-                <small class="text-muted">Click anywhere on the map to automatically pin your delivery coordinates and update your address.</small>
+                <small class="text-muted">Click anywhere on the map to automatically pin your delivery coordinates and
+                    update your address.</small>
             </div>
 
             <!-- Hidden Coordinates -->
@@ -46,13 +50,12 @@
                 </select>
             </div>
 
-            <!-- QR Code Section (Hidden by default) -->
-            <div id="qr-section" class="mb-4 text-center p-3 bg-white border rounded shadow-sm" style="display: none;">
-                <p class="fw-bold mb-2">Scan this QR Code with your Banking App:</p>
-                <img src="{{ asset('img/qr_pay.jpg') }}" alt="Payment QR Code" style="max-width: 180px; height: auto;"
-                    class="mb-3 border p-1">
-                <p class="text-muted small mb-2">Upload payment receipt screenshot after transfer:</p>
-                <input type="file" name="payment_receipt" class="form-control" accept="image/*">
+            <!-- QR Code Section -->
+
+            <div id="qr-section" class="mb-4 alert alert-info" style="display: none;">
+                <i class="fa-solid fa-qrcode me-1"></i>
+                You will be redirected to scan the dynamic KHQR code for your order after clicking <strong>Place
+                    Order</strong>.
             </div>
 
             <button type="submit" class="btn btn-success btn-lg w-100">Place Order</button>
@@ -108,13 +111,17 @@
 
         function togglePaymentSection(value) {
             var qrSection = document.getElementById('qr-section');
+            var receiptInput = document.getElementById('payment_receipt');
+
             if (value === 'QR Code') {
                 qrSection.style.display = 'block';
-                setTimeout(function () {
-                    map.invalidateSize();
-                }, 100);
+                if (receiptInput) receiptInput.setAttribute('required', 'required');
             } else {
                 qrSection.style.display = 'none';
+                if (receiptInput) {
+                    receiptInput.removeAttribute('required');
+                    receiptInput.value = '';
+                }
             }
         }
     </script>

@@ -1,54 +1,69 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Http\Request;
+use Gloudemans\Shoppingcart\Facades\Cart;
 class CheckoutController extends Controller
 {
-    /**
-     * Display the checkout page.
-     */
-    public function index(Request $request)
+    public function index()
     {
-        $user = Auth::user();
-        return view('checkout.index', compact('user'));
+        $user = auth()->user();
+        $cartItems = session()->get('cart', []);
+
+        $totalAmount = collect($cartItems)->sum(function ($item) {
+            return $item['price'] * $item['quantity'];
+        });
+
+        return view('checkout.index', compact('user', 'cartItems', 'totalAmount'));
     }
 
-    /**
-     * Process the order store action.
-     */
-public function store(Request $request)
-{
-    // គណនាតម្លៃសរុបពិតប្រាកដពី session cart
-    $totalPrice = 0;
-    if(session('cart')) {
-        foreach(session('cart') as $details) {
-            $totalPrice += $details['price'] * $details['quantity'];
+   public function store(Request $request)
+    {
+        $request->validate([
+            'shipping_address' => 'required',
+            'payment_method' => 'required',
+        ]);
+
+        $cartItems = session()->get('cart', []);
+
+        $totalAmount = collect($cartItems)->sum(function ($item) {
+            return $item['price'] * $item['quantity'];
+        });
+
+        // Save Order to Database as Pending
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'customer_name' => auth()->user()->name ?? 'Guest',
+            'total_price' => $totalAmount,
+            'shipping_address' => $request->shipping_address,
+            'payment_method' => $request->payment_method,
+            'status' => 'pending',
+            'payment_status' => 'pending',
+        ]);
+
+        // ==========================================
+        // 📌 បន្ថែម Loop នេះដើម្បី Insert ចូល order_items
+        // ==========================================
+     foreach ($cartItems as $productId => $item) {
+            OrderItem::create([
+                'order_id'   => $order->id,
+                'product_id' => $productId,    
+                'price'      => $item['price'],
+                'quantity'   => $item['quantity'],
+            ]);
         }
-    }
 
-    Order::create([
-        'user_id' => Auth::id(),
-        'customer_name' => Auth::user()->name, // 🔴 បញ្ចូលឈ្មោះអតិថិជនកុំឱ្យចេញ NULL
-        'total_price' => $totalPrice,         // 🔴 ដាក់តម្លៃសរុបពិតប្រាកដជំនួសឱ្យការហ្វុចថេរ 50.00
-        'shipping_address' => $request->shipping_address,
-        'latitude' => $request->latitude,
-        'longitude' => $request->longitude,
-        'payment_method' => $request->payment_method,
-        'status' => 'pending',
-    ]);
+        // Clear Cart
+        session()->forget('cart');
 
-    // លុប cart ចោលក្រោយបញ្ជាទិញរួច និងបញ្ជូនទៅកាន់ទំព័រ Success
-    session()->forget('cart');
-    return redirect()->route('checkout.success');
-}
+        // Redirect based on payment method
+        if ($request->payment_method === 'QR Code') {
+            return redirect()->route('payment.qr', ['order' => $order->id]);
+        }
 
-    /**
-     * Display the success page.
-     */
-    public function success()
-    {
-        return view('checkout.success');
+        return redirect()->route('orders.success', ['id' => $order->id]);
     }
 }

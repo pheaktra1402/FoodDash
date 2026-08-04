@@ -44,7 +44,7 @@ class CartController extends Controller
     {
         if ($request->id && $request->quantity) {
             $cart = session()->get('cart');
-            
+
             if ($request->quantity > 0) {
                 $cart[$request->id]["quantity"] = $request->quantity;
             } else {
@@ -56,92 +56,92 @@ class CartController extends Controller
         }
     }
 
-    // Remove single item from cart
+
+    public function store(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+        } else {
+            $cart[$id] = [
+                "name" => $product->product_name,
+                "quantity" => 1,
+                "price" => $product->selling_price,
+                "image" => $product->image
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        // គណនាបរិមាណសរុប (Total Quantity) ឱ្យត្រូវគ្នាជាមួយ Layout
+        $totalQuantity = 0;
+        foreach ($cart as $details) {
+            $totalQuantity += $details['quantity'];
+        }
+
+        // បញ្ជូនទិន្នន័យត្រឡប់ទៅវិញជា JSON
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => 'Product added to cart successfully!',
+                'cartCount' => $totalQuantity
+            ]);
+        }
+
+        return redirect()->back();
+    }
+    // Process the checkout and save order to database
+    public function checkout()
+    {
+        $cart = session()->get('cart');
+
+        if (!$cart || count($cart) == 0) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
+        }
+
+        // Calculate total
+        $totalPrice = 0;
+        foreach ($cart as $details) {
+            $totalPrice += $details['price'] * $details['quantity'];
+        }
+
+        // Create the Order record
+        $order = Order::create([
+            'user_id' => Auth::id(), // null if guest, or authenticated user ID
+            'customer_name' => Auth::user()->name ?? 'Guest Buyer',
+            'total_price' => $totalPrice,
+            'status' => 'pending'
+        ]);
+
+        // Save individual order items
+        foreach ($cart as $id => $details) {
+            // Check if you have an OrderItem model/table, or save directly if structured differently
+            \DB::table('order_items')->insert([
+                'order_id' => $order->id,
+                'product_id' => $id,
+                'price' => $details['price'],
+                'quantity' => $details['quantity'],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // Clear the cart session
+        session()->forget('cart');
+
+        return redirect()->route('products.index')->with('success', 'Order placed successfully! Thank you for buying.');
+    }
     public function remove(Request $request)
     {
-        if ($request->id) {
-            $cart = session()->get('cart');
-            if (isset($cart[$request->id])) {
-                unset($cart[$request->id]);
-                session()->put('cart', $cart);
-            }
-            session()->flash('success', 'Product removed successfully!');
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$request->id])) {
+            unset($cart[$request->id]);
+            session()->put('cart', $cart);
         }
+
+        return redirect()->back()->with('success', 'Product removed successfully!');
     }
-public function store(Request $request, $id)
-{
-    $product = Product::findOrFail($id);
-
-    $cart = session()->get('cart', []);
-    
-    if(isset($cart[$id])) {
-        $cart[$id]['quantity']++;
-    } else {
-        $cart[$id] = [
-            "name" => $product->product_name,
-            "quantity" => 1,
-            "price" => $product->selling_price,
-            "image" => $product->image
-        ];
-    }
-    
-    session()->put('cart', $cart);
-
-    // គណនាបរិមាណសរុប (Total Quantity) ឱ្យត្រូវគ្នាជាមួយ Layout
-    $totalQuantity = 0;
-    foreach ($cart as $details) {
-        $totalQuantity += $details['quantity'];
-    }
-
-    // បញ្ជូនទិន្នន័យត្រឡប់ទៅវិញជា JSON
-    if ($request->ajax() || $request->wantsJson()) {
-        return response()->json([
-            'success' => 'Product added to cart successfully!',
-            'cartCount' => $totalQuantity
-        ]);
-    }
-
-    return redirect()->back();
-}
-    // Process the checkout and save order to database
-public function checkout()
-{
-    $cart = session()->get('cart');
-
-    if(!$cart || count($cart) == 0) {
-        return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
-    }
-
-    // Calculate total
-    $totalPrice = 0;
-    foreach($cart as $details) {
-        $totalPrice += $details['price'] * $details['quantity'];
-    }
-
-    // Create the Order record
-    $order = Order::create([
-        'user_id'       => Auth::id(), // null if guest, or authenticated user ID
-        'customer_name' => Auth::user()->name ?? 'Guest Buyer',
-        'total_price'   => $totalPrice,
-        'status'        => 'pending'
-    ]);
-    
-    // Save individual order items
-    foreach($cart as $id => $details) {
-        // Check if you have an OrderItem model/table, or save directly if structured differently
-        \DB::table('order_items')->insert([
-            'order_id'   => $order->id,
-            'product_id' => $id,
-            'price'      => $details['price'],
-            'quantity'   => $details['quantity'],
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-    }
-
-    // Clear the cart session
-    session()->forget('cart');
-
-    return redirect()->route('products.index')->with('success', 'Order placed successfully! Thank you for buying.');
-}
 }
