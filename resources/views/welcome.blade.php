@@ -6,17 +6,17 @@
 
     .fd-home {
         --ink: #0F172A;
-        --primary: #10B981;
-        --primary-hover: #059669;
-        --primary-soft: #ECFDF5;
+        --primary: #F43F5E;
+        --primary-hover: #E11D48;
+        --primary-soft: #FFF1F2;
         --muted: #64748B;
         --border: #F1F5F9;
         --card-bg: #FFFFFF;
-        --bg-soft: #F8FAFC;
+        --bg-soft: #FCFCFD;
         font-family: 'Inter', sans-serif;
         color: var(--ink);
         background-color: var(--bg-soft);
-        padding-bottom: 80px;
+        padding-bottom: 90px;
     }
 
     .fd-home h1, .fd-home h2, .fd-home h3, .fd-home .fd-display {
@@ -29,12 +29,13 @@
         padding: 0 24px;
     }
 
-    /* Hero Section */
+    /* Hero Section - Elevated Banner Style */
     .fd-hero {
-        background: #fff;
-        padding: 50px 0 70px;
-        border-bottom: 1px solid var(--border);
+        background: linear-gradient(135deg, #FFF1F2 0%, #FFF5F7 100%);
+        padding: 60px 0 80px;
+        border-bottom: 1px solid #FFE4E6;
         margin-bottom: 60px;
+        border-radius: 0 0 32px 32px;
     }
 
     .fd-hero-grid {
@@ -61,11 +62,12 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        background: var(--primary-soft);
+        background: #ffffff;
         color: var(--primary);
         padding: 6px 14px;
         border-radius: 50px;
         margin-bottom: 16px;
+        box-shadow: 0 2px 6px rgba(244, 63, 94, 0.08);
     }
 
     .fd-h1 {
@@ -106,32 +108,35 @@
     .fd-btn-primary {
         background: var(--primary);
         color: #fff;
-        box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 6px 18px rgba(244, 63, 94, 0.35);
     }
 
     .fd-btn-primary:hover {
         background: var(--primary-hover);
         transform: translateY(-2px);
+        color: #fff;
     }
 
     .fd-btn-outline {
         background: #fff;
         color: var(--ink);
         border: 1px solid #E2E8F0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
 
     .fd-btn-outline:hover {
-        background: var(--bg-soft);
+        background: #F8FAFC;
         border-color: #CBD5E1;
+        color: var(--ink);
     }
 
-    /* Stats Grid */
+    /* Stats Grid inside Hero */
     .fd-stats {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         padding-top: 24px;
-        border-top: 1px solid var(--border);
+        border-top: 1px solid rgba(244, 63, 94, 0.15);
     }
 
     .fd-stat-num {
@@ -147,16 +152,16 @@
         margin: 0;
     }
 
-    /* Hero Image & Card */
+    /* Hero Image & Floating Tag */
     .fd-hero-media {
         position: relative;
     }
 
     .fd-hero-img-wrap {
-        border-radius: 24px;
+        border-radius: 28px;
         overflow: hidden;
         height: 380px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12);
     }
 
     .fd-hero-img-wrap img {
@@ -169,14 +174,15 @@
         position: absolute;
         left: 20px;
         bottom: -20px;
-        background: #fff;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
         border-radius: 16px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
         padding: 14px 18px;
         display: flex;
         align-items: center;
         gap: 12px;
-        border: 1px solid var(--border);
+        border: 1px solid #FFE4E6;
     }
 
     .fd-eta-icon {
@@ -235,7 +241,7 @@
         height: 16px;
     }
 
-    /* Product Grid & Modern Cards */
+    /* Product Grid & Clean Minimalist Cards */
     .fd-grid {
         display: grid;
         grid-template-columns: 1fr;
@@ -252,61 +258,63 @@
 
     .fd-card {
         background: var(--card-bg);
-        border-radius: 20px;
+        border-radius: 24px;
         overflow: hidden;
         border: 1px solid #E2E8F0;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         display: flex;
         flex-direction: column;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
     }
 
     .fd-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
-        border-color: #CBD5E1;
+        transform: translateY(-6px);
+        box-shadow: 0 20px 35px -10px rgba(244, 63, 94, 0.12);
+        border-color: #FDA4AF;
     }
 
-  .fd-card-img-wrap {
+    .fd-card-img-wrap {
         position: relative;
-        height: 200px;
+        height: 220px;
         overflow: hidden;
-        background: #F8FAFC;
+        background: #F8FAFC; /* Clean backdrop for product images */
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 16px;
     }
 
     .fd-card-img-wrap img {
         width: 100%;
         height: 100%;
-        object-fit: contain;
-        padding: 12px; 
-        transition: transform 0.5s ease;
+        object-fit: contain; /* Prevents stretching or cutting off product boxes/bottles */
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .fd-card:hover .fd-card-img-wrap img {
-        transform: scale(1.05);
+        transform: scale(1.06);
     }
 
     .fd-rating {
         position: absolute;
-        top: 12px;
-        right: 12px;
+        top: 14px;
+        right: 14px;
         background: rgba(15, 23, 42, 0.75);
-        backdrop-filter: blur(4px);
+        backdrop-filter: blur(6px);
         color: #fff;
         font-size: 12px;
         font-weight: 600;
-        padding: 4px 10px;
+        padding: 5px 12px;
         border-radius: 50px;
         display: flex;
         align-items: center;
         gap: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        z-index: 2;
     }
 
     .fd-card-body {
-        padding: 20px;
+        padding: 22px;
         display: flex;
         flex-direction: column;
         flex-grow: 1;
@@ -315,7 +323,7 @@
     .fd-card-title {
         margin: 0 0 8px 0;
         font-weight: 700;
-        font-size: 17px;
+        font-size: 18px;
         color: var(--ink);
         display: -webkit-box;
         -webkit-line-clamp: 1;
@@ -339,15 +347,15 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-top: 12px;
-        border-top: 1px solid var(--border);
+        padding-top: 14px;
+        border-top: 1px solid #F1F5F9;
         margin-top: auto;
     }
 
     .fd-price {
         margin: 0;
         font-weight: 800;
-        font-size: 19px;
+        font-size: 20px;
         color: var(--ink);
     }
 
@@ -355,21 +363,22 @@
         font-size: 12px;
         font-weight: 600;
         padding: 8px 14px;
-        border-radius: 8px;
+        border-radius: 10px;
         background: var(--bg-soft);
         border: 1px solid #E2E8F0;
         color: var(--ink);
         text-decoration: none;
-        transition: background 0.2s;
+        transition: all 0.2s;
     }
 
     .fd-login-btn:hover {
         background: #E2E8F0;
+        color: var(--ink);
     }
 
     .fd-add-btn {
-        width: 38px;
-        height: 38px;
+        width: 40px;
+        height: 40px;
         border-radius: 12px;
         background: var(--primary);
         display: inline-flex;
@@ -378,12 +387,12 @@
         border: none;
         cursor: pointer;
         transition: all 0.2s ease;
-        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+        box-shadow: 0 4px 12px rgba(244, 63, 94, 0.35);
     }
 
     .fd-add-btn:hover {
         background: var(--primary-hover);
-        transform: scale(1.05);
+        transform: scale(1.08);
     }
 </style>
 
@@ -393,29 +402,29 @@
     <div class="fd-hero">
         <div class="fd-wrap fd-hero-grid">
             <div class="fd-hero-text">
-                <span class="fd-eyebrow">🚀 Delivering across the city</span>
-                <h1 class="fd-h1">Order from your favorite local spots</h1>
+                <span class="fd-eyebrow">🚀 Fast food delivery service</span>
+                <h1 class="fd-h1">Delicious meals delivered to your doorstep</h1>
                 <p class="fd-sub">
-                    Browse hundreds of restaurants nearby and get hot food delivered to your door in under 30 minutes.
+                    Explore top-rated local restaurants and enjoy hot, freshly prepared food in record time.
                 </p>
                 <div class="fd-cta-row">
-                    <a href="{{ route('products.index') }}" class="fd-btn fd-btn-primary">Browse restaurants</a>
+                    <a href="{{ route('products.index') }}" class="fd-btn fd-btn-primary">Explore menu</a>
                     @guest
-                        <a href="{{ route('register') }}" class="fd-btn fd-btn-outline">Create account</a>
+                        <a href="{{ route('register') }}" class="fd-btn fd-btn-outline">Join free</a>
                     @endguest
                 </div>
                 <div class="fd-stats">
                     <div>
                         <p class="fd-stat-num">500+</p>
-                        <p class="fd-stat-label">Restaurants</p>
+                        <p class="fd-stat-label">Dishes & Options</p>
                     </div>
                     <div>
-                        <p class="fd-stat-num">28 min</p>
-                        <p class="fd-stat-label">Fast Delivery</p>
+                        <p class="fd-stat-num">25 min</p>
+                        <p class="fd-stat-label">Avg. Delivery</p>
                     </div>
                     <div>
-                        <p class="fd-stat-num">4.8 ★</p>
-                        <p class="fd-stat-label">User Rating</p>
+                        <p class="fd-stat-num">4.9 ★</p>
+                        <p class="fd-stat-label">Customer Reviews</p>
                     </div>
                 </div>
             </div>
@@ -432,8 +441,8 @@
                         </svg>
                     </span>
                     <div>
-                        <p style="margin:0; font-size:14px; font-weight:700; color:var(--ink);">Arriving in 22 min</p>
-                        <p style="margin:2px 0 0; font-size:12px; color:var(--muted);">Order placed 2 min ago</p>
+                        <p style="margin:0; font-size:14px; font-weight:700; color:var(--ink);">Estimated arrival</p>
+                        <p style="margin:2px 0 0; font-size:12px; color:var(--primary); font-weight: 600;">~20-25 mins away</p>
                     </div>
                 </div>
             </div>
@@ -444,7 +453,7 @@
     <div class="fd-wrap">
         <div class="fd-featured-head">
             <div>
-                <span class="fd-featured-eyebrow">Popular right now</span>
+                <span class="fd-featured-eyebrow">Trending selections</span>
                 <h2 class="fd-featured-title">Dishes people keep ordering</h2>
             </div>
             <a href="{{ route('products.index') }}" class="fd-view-all">
@@ -461,7 +470,7 @@
                     <div class="fd-card">
                         <div class="fd-card-img-wrap">
                             <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80' }}" 
-                                 alt="{{ $product->product_name }}" width="400" height="210">
+                                 alt="{{ $product->product_name }}" width="400" height="220">
                             <span class="fd-rating">★ 4.8</span>
                         </div>
                         <div class="fd-card-body">
@@ -493,54 +502,4 @@
 
 </div>
 
-<!-- Toast Notification -->
-<div id="toast-notification" style="position: fixed; bottom: 24px; right: 24px; background: #0F172A; color: #fff; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.15); opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateY(20px); pointer-events: none; z-index: 9999;">
-    Product added to cart successfully!
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const toast = document.getElementById('toast-notification');
-
-    function showToast(message) {
-        toast.innerText = message;
-        toast.style.opacity = '1';
-        toast.style.transform = 'translateY(0)';
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateY(20px)';
-        }, 2000);
-    }
-
-    document.querySelectorAll('.add-to-cart-form').forEach(form => {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            let url = this.action;
-            let token = this.querySelector('input[name="_token"]').value;
-
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': token,
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const cartBadge = document.querySelector('.cart-badge-count');
-                    if (cartBadge) {
-                        cartBadge.innerText = data.cartCount;
-                    }
-                    showToast(data.success);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
-});
-</script>
 @endsection
