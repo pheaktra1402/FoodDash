@@ -1,3 +1,17 @@
+# Stage 1: Build frontend assets with a modern Node version (Vite 8 needs Node 20+)
+FROM node:22-alpine AS frontend
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
+
+COPY vite.config.js tailwind.config.js postcss.config.js ./
+COPY resources ./resources
+
+RUN npm run build
+
+# Stage 2: PHP application
 FROM php:8.4-apache
 
 # Install system dependencies
@@ -10,8 +24,6 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     zip \
     unzip \
-    nodejs \
-    npm \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -27,14 +39,19 @@ RUN docker-php-ext-install \
 
 WORKDIR /var/www/html
 
-# Copy project
+# Copy project files
 COPY . /var/www/html
 
-# Install frontend dependencies and build Vite
-RUN npm install
-RUN npm run build
+# Copy compiled Vite assets from the frontend stage
+COPY --from=frontend /app/public/build /var/www/html/public/build
 
-# Create SQLite database
+# Install PHP dependencies when vendor is not committed
+RUN if [ ! -d vendor ]; then \
+        curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+        composer install --no-dev --optimize-autoloader --no-interaction; \
+    fi
+
+# Create SQLite database file
 RUN touch database/database.sqlite
 
 # Permissions
@@ -56,7 +73,10 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/apache2.conf \
     && a2enmod rewrite
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh \
+    && chmod +x /usr/local/bin/docker-entrypoint.sh
+
 EXPOSE 80
 
-# Run migrations and start Apache
-CMD ["sh", "-c", "php artisan migrate --force --seed && apache2-foreground"]
+ENTRYPOINT ["docker-entrypoint.sh"]

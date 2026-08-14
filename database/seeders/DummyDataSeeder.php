@@ -2,93 +2,93 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
 use App\Models\Category;
-use App\Models\Restaurant;
 use App\Models\Food;
 use App\Models\Product;
+use App\Models\Restaurant;
+use Illuminate\Database\Seeder;
 
 class DummyDataSeeder extends Seeder
 {
     public function run(): void
     {
         $categories = [
-            ['id' => 1, 'name' => 'Burger', 'iconUrl' => 'https://cdn-icons-png.flaticon.com/512/3075/3075977.png'],
-            ['id' => 2, 'name' => 'Pizza', 'iconUrl' => 'https://cdn-icons-png.flaticon.com/512/3595/3595458.png'],
-            ['id' => 3, 'name' => 'Sushi', 'iconUrl' => 'https://cdn-icons-png.flaticon.com/512/2254/2254515.png'],
-            ['id' => 4, 'name' => 'Dessert', 'iconUrl' => 'https://cdn-icons-png.flaticon.com/512/3081/3081885.png'],
-            ['id' => 5, 'name' => 'Drinks', 'iconUrl' => 'https://cdn-icons-png.flaticon.com/512/3081/3081162.png'],
+            ['id' => 1, 'category_code' => 'CAT001', 'category_name' => 'Burger', 'description' => 'Burger category'],
+            ['id' => 2, 'category_code' => 'CAT002', 'category_name' => 'Pizza', 'description' => 'Pizza category'],
+            ['id' => 3, 'category_code' => 'CAT003', 'category_name' => 'Sushi', 'description' => 'Sushi category'],
+            ['id' => 4, 'category_code' => 'CAT004', 'category_name' => 'Dessert', 'description' => 'Dessert category'],
+            ['id' => 5, 'category_code' => 'CAT005', 'category_name' => 'Drinks', 'description' => 'Drinks category'],
         ];
-        $products = [
-    [
-        'category_id' => 1,
-        'product_code' => 'BUR001',
-        'product_name' => 'Classic Burger',
-        'description' => 'Juicy beef burger with fresh lettuce, tomato and cheese.',
-        'cost_price' => 3.00,
-        'selling_price' => 5.99,
-        'stock_qty' => 50,
-        'barcode' => '100000000001',
-        'image' => 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80',
-        'status' => 'Active',
-    ],
-    [
-        'category_id' => 2,
-        'product_code' => 'PIZ001',
-        'product_name' => 'Pepperoni Pizza',
-        'description' => 'Classic pepperoni pizza with mozzarella cheese.',
-        'cost_price' => 7.00,
-        'selling_price' => 12.99,
-        'stock_qty' => 30,
-        'barcode' => '100000000002',
-        'image' => 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80',
-        'status' => 'Active',
-    ],
-    [
-        'category_id' => 3,
-        'product_code' => 'SUS001',
-        'product_name' => 'Salmon Sushi Roll',
-        'description' => 'Fresh salmon sushi roll with avocado and cucumber.',
-        'cost_price' => 5.00,
-        'selling_price' => 8.99,
-        'stock_qty' => 25,
-        'barcode' => '100000000003',
-        'image' => 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=500&q=80',
-        'status' => 'Active',
-    ],
-    [
-        'category_id' => 4,
-        'product_code' => 'DES001',
-        'product_name' => 'Chocolate Cake',
-        'description' => 'Rich chocolate cake with creamy chocolate frosting.',
-        'cost_price' => 3.00,
-        'selling_price' => 6.50,
-        'stock_qty' => 20,
-        'barcode' => '100000000004',
-        'image' => 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
-        'status' => 'Active',
-    ],
-    [
-        'category_id' => 5,
-        'product_code' => 'DRK001',
-        'product_name' => 'Fresh Orange Juice',
-        'description' => 'Freshly squeezed orange juice.',
-        'cost_price' => 1.50,
-        'selling_price' => 3.50,
-        'stock_qty' => 40,
-        'barcode' => '100000000005',
-        'image' => 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',
-        'status' => 'Active',
-    ],
-];
 
-foreach ($products as $product) {
-    Product::create($product);
-}
-        foreach ($categories as $cat) {
-            Category::create($cat);
+        foreach ($categories as $category) {
+            Category::updateOrCreate(['id' => $category['id']], $category);
+        }
+
+        $products = [
+            [
+                'category_id' => 1,
+                'product_code' => 'BUR001',
+                'product_name' => 'Classic Burger',
+                'description' => 'Juicy beef burger with fresh lettuce, tomato and cheese.',
+                'cost_price' => 3.00,
+                'selling_price' => 5.99,
+                'stock_qty' => 50,
+                'barcode' => '100000000001',
+                'image' => 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80',
+                'status' => 'Active',
+            ],
+            [
+                'category_id' => 2,
+                'product_code' => 'PIZ001',
+                'product_name' => 'Pepperoni Pizza',
+                'description' => 'Classic pepperoni pizza with mozzarella cheese.',
+                'cost_price' => 7.00,
+                'selling_price' => 12.99,
+                'stock_qty' => 30,
+                'barcode' => '100000000002',
+                'image' => 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80',
+                'status' => 'Active',
+            ],
+            [
+                'category_id' => 3,
+                'product_code' => 'SUS001',
+                'product_name' => 'Salmon Sushi Roll',
+                'description' => 'Fresh salmon sushi roll with avocado and cucumber.',
+                'cost_price' => 5.00,
+                'selling_price' => 8.99,
+                'stock_qty' => 25,
+                'barcode' => '100000000003',
+                'image' => 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=500&q=80',
+                'status' => 'Active',
+            ],
+            [
+                'category_id' => 4,
+                'product_code' => 'DES001',
+                'product_name' => 'Chocolate Cake',
+                'description' => 'Rich chocolate cake with creamy chocolate frosting.',
+                'cost_price' => 3.00,
+                'selling_price' => 6.50,
+                'stock_qty' => 20,
+                'barcode' => '100000000004',
+                'image' => 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
+                'status' => 'Active',
+            ],
+            [
+                'category_id' => 5,
+                'product_code' => 'DRK001',
+                'product_name' => 'Fresh Orange Juice',
+                'description' => 'Freshly squeezed orange juice.',
+                'cost_price' => 1.50,
+                'selling_price' => 3.50,
+                'stock_qty' => 40,
+                'barcode' => '100000000005',
+                'image' => 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',
+                'status' => 'Active',
+            ],
+        ];
+
+        foreach ($products as $product) {
+            Product::updateOrCreate(['product_code' => $product['product_code']], $product);
         }
 
         $restaurants = [
@@ -124,8 +124,8 @@ foreach ($products as $product) {
             ],
         ];
 
-        foreach ($restaurants as $rest) {
-            Restaurant::create($rest);
+        foreach ($restaurants as $restaurant) {
+            Restaurant::updateOrCreate(['id' => $restaurant['id']], $restaurant);
         }
 
         $foods = [
@@ -168,7 +168,7 @@ foreach ($products as $product) {
         ];
 
         foreach ($foods as $food) {
-            Food::create($food);
+            Food::updateOrCreate(['id' => $food['id']], $food);
         }
     }
 }

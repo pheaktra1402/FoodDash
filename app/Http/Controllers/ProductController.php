@@ -12,7 +12,7 @@ class ProductController extends Controller
 
         // Fetch products from database with search support for product_name and category
         $products = Product::with('category')
-            ->where('status', 1)
+            ->where('status', 'Active')
             ->when($search, function ($query, $search) {
                 return $query->where('product_name', 'like', "%{$search}%")
                              ->orWhereHas('category', function ($q) use ($search) {
