@@ -16,13 +16,10 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy application files
+# Copy all project files including the local vendor folder
 COPY . /var/www/html
 
 # Set permissions for Laravel storage and cache
@@ -36,9 +33,5 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 
 # Enable Apache Mod Rewrite
 RUN a2enmod rewrite
-
-# Allow superuser for composer and install dependencies safely
-ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 EXPOSE 80
