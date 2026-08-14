@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y \
     libsqlite3-dev \
     zip \
     unzip \
+    nodejs \
+    npm \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -23,13 +25,16 @@ RUN docker-php-ext-install \
     bcmath \
     gd
 
-# Set working directory
 WORKDIR /var/www/html
 
 # Copy project
 COPY . /var/www/html
 
-# Create SQLite database file
+# Install frontend dependencies and build Vite
+RUN npm install
+RUN npm run build
+
+# Create SQLite database
 RUN touch database/database.sqlite
 
 # Permissions
@@ -53,5 +58,5 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 
 EXPOSE 80
 
-# Run migrations before starting Apache
-CMD ["sh", "-c", "php artisan migrate --force && apache2-foreground"]
+# Run migrations and start Apache
+CMD ["sh", "-c", "php artisan migrate --force --seed && apache2-foreground"]
