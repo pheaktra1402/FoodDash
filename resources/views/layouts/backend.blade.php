@@ -1,5 +1,7 @@
 @extends('layouts.frontend')
 
+@section('title', 'Admin Panel - ' . config('app.name', 'FoodDash'))
+
 @section('content')
 <style>
     /* Ensures container takes full viewport height */

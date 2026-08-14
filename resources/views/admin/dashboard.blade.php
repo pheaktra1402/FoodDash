@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('admin-content')
-<div class="container-fluid p-0">
+<!-- <div class="container-fluid p-0">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="h3 mb-0 text-dark fw-bold" style="font-family: 'Plus Jakarta Sans', sans-serif;">Dashboard</h2>
