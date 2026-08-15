@@ -1,23 +1,30 @@
 #!/bin/sh
+
 set -e
 
-cd /var/www/html
+echo "Starting FoodDash..."
 
-# Use Render environment variables when .env is not mounted
-if [ ! -f .env ]; then
-    cp .env.example .env
+# Make sure SQLite database exists
+touch /var/www/html/database/database.sqlite
+
+# Run database migrations
+php artisan migrate --force
+
+# Seed database only when products table is empty
+PRODUCT_COUNT=$(php artisan tinker --execute="echo App\Models\Product::count();")
+
+if [ "$PRODUCT_COUNT" = "0" ]; then
+    echo "No products found. Running database seeder..."
+    php artisan db:seed --force
+else
+    echo "Products already exist. Skipping seeder."
 fi
 
-# Generate APP_KEY at runtime when not provided in Render env vars
-if [ -z "$APP_KEY" ]; then
-    php artisan key:generate --force --no-interaction
-fi
+# Clear Laravel caches
+php artisan config:clear
+php artisan cache:clear
 
-php artisan storage:link --force --no-interaction 2>/dev/null || true
-php artisan migrate --force --no-interaction
-php artisan db:seed --force --no-interaction || true
-php artisan config:cache --no-interaction
-php artisan route:cache --no-interaction
-php artisan view:cache --no-interaction
+echo "FoodDash is ready!"
 
+# Start Apache
 exec apache2-foreground
