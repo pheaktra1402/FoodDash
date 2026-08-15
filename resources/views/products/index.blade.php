@@ -121,7 +121,7 @@
         <div class="row mb-5 align-items-center g-3">
             <div class="col-md-7">
                 <h2 class="fw-bold text-dark mb-1" style="font-family: 'Plus Jakarta Sans', sans-serif;">Our Products</h2>
-                <p class="text-muted m-0">Explore our latest collection of delicious items and essentials</p>
+                <p class="text-muted m-0">Discover authentic Cambodian dishes, street food, and desserts</p>
             </div>
             
             <div class="col-md-5">

@@ -10,15 +10,9 @@ touch /var/www/html/database/database.sqlite
 # Run database migrations
 php artisan migrate --force
 
-# Seed database only when products table is empty
-PRODUCT_COUNT=$(php artisan tinker --execute="echo App\Models\Product::count();")
-
-if [ "$PRODUCT_COUNT" = "0" ]; then
-    echo "No products found. Running database seeder..."
-    php artisan db:seed --force
-else
-    echo "Products already exist. Skipping seeder."
-fi
+# Sync demo products and categories (safe to re-run; uses updateOrCreate)
+echo "Syncing Cambodian food demo data..."
+php artisan db:seed --class=DummyDataSeeder --force
 
 # Link public storage for uploaded product images
 php artisan storage:link --force 2>/dev/null || ln -sf /var/www/html/storage/app/public /var/www/html/public/storage

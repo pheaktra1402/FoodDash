@@ -20,7 +20,7 @@ class ProductController extends Controller
                              });
             })
             ->latest()
-            ->paginate(8);
+            ->paginate(16);
 
         return view('products.index', compact('products'));
     }

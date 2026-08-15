@@ -23,7 +23,7 @@ use App\Http\Controllers\Admin\DashboardController;
 
 // Home Page
 Route::get('/', function () {
-    $featuredProducts = Product::take(6)->get();
+    $featuredProducts = Product::where('status', 'Active')->latest()->take(6)->get();
     return view('welcome', compact('featuredProducts'));
 })->name('home');
 

@@ -403,10 +403,10 @@
     <div class="fd-hero">
         <div class="fd-wrap fd-hero-grid">
             <div class="fd-hero-text">
-                <span class="fd-eyebrow">🚀 Fast food delivery service</span>
-                <h1 class="fd-h1">Delicious meals delivered to your doorstep</h1>
+                <span class="fd-eyebrow">🇰🇭 Authentic Khmer cuisine</span>
+                <h1 class="fd-h1">Cambodian food delivered to your doorstep</h1>
                 <p class="fd-sub">
-                    Explore top-rated local restaurants and enjoy hot, freshly prepared food in record time.
+                    Explore traditional Khmer dishes, street food, and desserts from local kitchens across Cambodia.
                 </p>
                 <div class="fd-cta-row">
                     <a href="{{ route('products.index') }}" class="fd-btn fd-btn-primary">Explore menu</a>
@@ -454,7 +454,7 @@
     <div class="fd-wrap">
         <div class="fd-featured-head">
             <div>
-                <span class="fd-featured-eyebrow">Trending selections</span>
+                <span class="fd-featured-eyebrow">Khmer favorites</span>
                 <h2 class="fd-featured-title">Dishes people keep ordering</h2>
             </div>
             <a href="{{ route('products.index') }}" class="fd-view-all">
