@@ -62,14 +62,8 @@
                             <div class="image-preview-box">
                                 @if($product->image)
                                     <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}"
-                                        class="w-100 h-100 object-fit-contain"
-                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-
-                                    <div class="align-items-center justify-content-center h-100 text-muted"
-                                        style="display:none;">
-                                        <i class="fa-regular fa-image fa-2x"></i>
-                                    </div>
-
+                                        class="w-100 h-100 object-fit-cover rounded-4"
+                                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80';">
                                 @else
                                     <div class="text-muted py-5">
                                         <i class="fa-regular fa-image fa-4x mb-2 opacity-50"></i>

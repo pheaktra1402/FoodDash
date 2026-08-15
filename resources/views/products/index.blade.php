@@ -54,16 +54,23 @@
 
     /* Reduced image container height to make card shorter */
     .product-img-wrap {
-        height: 180px;
+        height: 200px;
         background: #F8FAFC;
         position: relative;
         overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 12px;
         border-top-left-radius: 16px;
         border-top-right-radius: 16px;
+    }
+
+    .product-img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-img-wrap img {
+        transform: scale(1.05);
     }
 
     /* Custom Pagination Styling */
@@ -121,7 +128,7 @@
         <div class="row mb-5 align-items-center g-3">
             <div class="col-md-7">
                 <h2 class="fw-bold text-dark mb-1" style="font-family: 'Plus Jakarta Sans', sans-serif;">Our Products</h2>
-                <p class="text-muted m-0">Discover authentic Cambodian dishes, street food, and desserts</p>
+                <p class="text-muted m-0">Explore our wide selection of delicious meals, burgers, pizzas, noodles, and drinks</p>
             </div>
             
             <div class="col-md-5">
@@ -146,7 +153,7 @@
                             <div class="product-img-wrap">
                                 @if($product->image)
                                     <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}"
-                                        class="w-100 h-100 object-fit-contain transition">
+                                        onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80';">
                                 @else
                                     <div class="d-flex align-items-center justify-content-center h-100 text-muted">
                                         <i class="fa-regular fa-image fa-2x"></i>

@@ -19,8 +19,8 @@ class ProductController extends Controller
                                  $q->where('category_name', 'like', "%{$search}%");
                              });
             })
-            ->latest()
-            ->paginate(16);
+            ->inRandomOrder()
+            ->paginate(8);
 
         return view('products.index', compact('products'));
     }

@@ -276,19 +276,15 @@
 
     .fd-card-img-wrap {
         position: relative;
-        height: 220px;
+        height: 200px;
         overflow: hidden;
-        background: #F8FAFC; /* Clean backdrop for product images */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
+        background: #F8FAFC;
     }
 
     .fd-card-img-wrap img {
         width: 100%;
         height: 100%;
-        object-fit: contain; /* Prevents stretching or cutting off product boxes/bottles */
+        object-fit: cover;
         transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
@@ -403,10 +399,10 @@
     <div class="fd-hero">
         <div class="fd-wrap fd-hero-grid">
             <div class="fd-hero-text">
-                <span class="fd-eyebrow">🇰🇭 Authentic Khmer cuisine</span>
-                <h1 class="fd-h1">Cambodian food delivered to your doorstep</h1>
+                <span class="fd-eyebrow">🚀 Fast Food Delivery Service</span>
+                <h1 class="fd-h1">Delicious meals delivered to your doorstep</h1>
                 <p class="fd-sub">
-                    Explore traditional Khmer dishes, street food, and desserts from local kitchens across Cambodia.
+                    Explore top-rated local restaurants and enjoy hot, freshly prepared food in record time.
                 </p>
                 <div class="fd-cta-row">
                     <a href="{{ route('products.index') }}" class="fd-btn fd-btn-primary">Explore menu</a>
@@ -454,8 +450,8 @@
     <div class="fd-wrap">
         <div class="fd-featured-head">
             <div>
-                <span class="fd-featured-eyebrow">Khmer favorites</span>
-                <h2 class="fd-featured-title">Dishes people keep ordering</h2>
+                <span class="fd-featured-eyebrow">Trending selections</span>
+                <h2 class="fd-featured-title">Popular dishes people love</h2>
             </div>
             <a href="{{ route('products.index') }}" class="fd-view-all">
                 View full menu
@@ -470,8 +466,10 @@
                 @foreach($featuredProducts as $product)
                     <div class="fd-card">
                         <div class="fd-card-img-wrap">
-                            <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80' }}" 
-                                 alt="{{ $product->product_name }}" width="400" height="220">
+                            <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80' }}" 
+                                 alt="{{ $product->product_name }}" 
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80';"
+                                 width="400" height="200">
                             <span class="fd-rating">★ 4.8</span>
                         </div>
                         <div class="fd-card-body">

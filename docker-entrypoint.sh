@@ -11,7 +11,7 @@ touch /var/www/html/database/database.sqlite
 php artisan migrate --force
 
 # Sync demo products and categories (safe to re-run; uses updateOrCreate)
-echo "Syncing Cambodian food demo data..."
+echo "Syncing demo food products..."
 php artisan db:seed --class=DummyDataSeeder --force
 
 # Link public storage for uploaded product images
