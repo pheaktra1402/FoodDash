@@ -87,7 +87,7 @@
                             <div class="mb-3 p-3 border rounded-4 bg-light d-inline-block" style="border-color: #E2E8F0 !important;">
                                 <span class="d-block text-muted small fw-semibold mb-2">Current Image:</span>
                                 <div class="rounded-3 overflow-hidden shadow-sm bg-white" style="width: 100px; height: 100px;">
-                                    <img src="{{ asset('storage/' . $product->image) }}" 
+                                    <img src="{{ $product->image_url }}" 
                                          alt="Current Product Image" 
                                          class="w-100 h-100 object-fit-cover">
                                 </div>

@@ -68,7 +68,7 @@
                                 <td class="text-center py-3">
                                     <div style="width: 44px; height: 44px; margin: 0 auto;" class="d-flex align-items-center justify-content-center bg-light border rounded-3 overflow-hidden shadow-sm" style="border-color: #E2E8F0 !important;">
                                         @if($product->image)
-                                            <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid w-100 h-100 object-fit-cover">
+                                            <img src="{{ $product->image_url }}" class="img-fluid w-100 h-100 object-fit-cover">
                                         @else
                                             <span class="text-muted" style="font-size: 9px;">No image</span>
                                         @endif

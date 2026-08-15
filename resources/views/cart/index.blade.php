@@ -91,7 +91,7 @@
                                                 <td class="py-3 px-4">
                                                     <div class="d-flex align-items-center gap-3">
                                                         @if(isset($details['image']))
-                                                            <img src="{{ asset('storage/' . $details['image']) }}" class="border rounded-3 shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                                            <img src="{{ product_image_url($details['image']) }}" class="border rounded-3 shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
                                                         @else
                                                             <div class="bg-light border rounded-3 d-flex align-items-center justify-content-center text-muted shadow-sm" style="width: 50px; height: 50px; font-size: 10px;">No img</div>
                                                         @endif

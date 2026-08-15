@@ -25,6 +25,11 @@ class Product extends Model
     ];
 
     // Relationship to Category (if you have a Category model)
+    public function getImageUrlAttribute(): ?string
+    {
+        return product_image_url($this->image);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);

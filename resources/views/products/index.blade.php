@@ -145,7 +145,7 @@
                             <!-- Product Image -->
                             <div class="product-img-wrap">
                                 @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}"
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}"
                                         class="w-100 h-100 object-fit-contain transition">
                                 @else
                                     <div class="d-flex align-items-center justify-content-center h-100 text-muted">

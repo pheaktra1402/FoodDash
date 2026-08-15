@@ -20,6 +20,9 @@ else
     echo "Products already exist. Skipping seeder."
 fi
 
+# Link public storage for uploaded product images
+php artisan storage:link --force 2>/dev/null || ln -sf /var/www/html/storage/app/public /var/www/html/public/storage
+
 # Clear Laravel caches
 php artisan config:clear
 php artisan cache:clear

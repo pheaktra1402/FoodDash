@@ -470,7 +470,7 @@
                 @foreach($featuredProducts as $product)
                     <div class="fd-card">
                         <div class="fd-card-img-wrap">
-                            <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80' }}" 
+                            <img src="{{ $product->image_url ?? 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80' }}" 
                                  alt="{{ $product->product_name }}" width="400" height="220">
                             <span class="fd-rating">★ 4.8</span>
                         </div>
