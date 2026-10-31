@@ -399,7 +399,6 @@
     <div class="fd-hero">
         <div class="fd-wrap fd-hero-grid">
             <div class="fd-hero-text">
-                <span class="fd-eyebrow">🚀 Fast Food Delivery Service</span>
                 <h1 class="fd-h1">Delicious meals delivered to your doorstep</h1>
                 <p class="fd-sub">
                     Explore top-rated local restaurants and enjoy hot, freshly prepared food in record time.
@@ -430,17 +429,6 @@
                 <div class="fd-hero-img-wrap">
                     <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"
                         alt="Food delivery" width="1035" height="380">
-                </div>
-                <div class="fd-eta-card">
-                    <span class="fd-eta-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </span>
-                    <div>
-                        <p style="margin:0; font-size:14px; font-weight:700; color:var(--ink);">Estimated arrival</p>
-                        <p style="margin:2px 0 0; font-size:12px; color:var(--primary); font-weight: 600;">~20-25 mins away</p>
-                    </div>
                 </div>
             </div>
         </div>
